@@ -97,7 +97,7 @@ module.exports = {
             });
         });
     },
-   login:(req, res) =>{
+   login: (req, res) =>{
     const body = req.body;
     getUserByEmail(body.email, (err, results) =>{
         if(err){

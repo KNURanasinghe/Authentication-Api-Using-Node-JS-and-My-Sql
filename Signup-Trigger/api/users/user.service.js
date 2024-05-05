@@ -61,18 +61,25 @@ module.exports = {
         }
         );
     },
-    deleteUser:(data, callback) =>{
+    deleteUser: (data, callback) => {
         pool.query(
             `delete from users where id = ?`,
             [data.id],
-            (error, results, feilds) =>{
-                if(error){
-                    callback(error);
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
                 }
-                return callback(null, results[0]);
+                // Check if rows were affected
+                if (results.affectedRows === 0) {
+                    // No user found with the given ID
+                    return callback(null, { message: "No user found with the given ID" });
+                }
+                // User deleted successfully
+                return callback(null, { message: "User deleted successfully" });
             }
         );
     },
+    
     getUserByEmail: (email, callback) => {
         pool.query(
             `select * from users where email = ?`,
@@ -84,5 +91,6 @@ module.exports = {
                 return callback(null,results[0])
             }
         );
-    }
+    },
+    
 };
